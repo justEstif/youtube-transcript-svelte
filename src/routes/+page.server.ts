@@ -5,23 +5,22 @@ export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData();
 		const url = String(formData.get('url'));
-		try {
-			// check if valid link
-			// get youtube id
-			// get youtube video title
-			// get youtube source
-			// get transcript
-			// get youtube link
-			const id = retrieveVideoId(url);
-			const transcript = await fetchTranscript(id);
-			const combinedTranscript = transcript.map((item) => item.text).join(' ');
-			return {
-				success: true,
-				transcript: combinedTranscript,
-				embedUrl: `https://www.youtube.com/embed/${id}`
-			};
-		} catch (error) {
-			return fail(400, { url, message: 'error getting transcript' });
+		const id = retrieveVideoId(url);
+
+		if (id) {
+			try {
+				const transcript = await fetchTranscript(id);
+				const combinedTranscript = transcript.map((item) => item.text).join(' ');
+				return {
+					success: true,
+					transcript: combinedTranscript,
+					embedUrl: `https://www.youtube.com/embed/${id}`
+				};
+			} catch (error) {
+				return fail(400, { url, message: 'error getting transcript' });
+			}
+		} else {
+			return fail(400, { url, message: 'invalid url' });
 		}
 	}
 };

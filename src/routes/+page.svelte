@@ -2,18 +2,24 @@
 	export let form;
 </script>
 
-<form method="POST">
-	<label>
-		Youtube URL
-		<input type="text" name="url" required />
-	</label>
-</form>
+<div class="py-10 join">
+	<form method="POST" class="flex">
+		<input
+			class="input input-bordered w-full max-w-lg join-item"
+			placeholder="Youtube URL"
+			type="text"
+			name="url"
+			required
+		/>
+		<button type="submit" class="btn join-item">Search</button>
+	</form>
+</div>
 
 {#if form?.message}
 	<p>{form?.message}</p>
 {:else if form?.transcript}
 	<iframe
-		class="w-full aspect-video"
+		class="pb-10 w-full aspect-video"
 		src={form?.embedUrl}
 		title="YouTube video player"
 		frameborder="0"

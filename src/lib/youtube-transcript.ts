@@ -41,6 +41,8 @@ export const fetchTranscript = async (id: string) => {
 				duration: parseInt(cue.transcriptCueGroupRenderer.cues[0].transcriptCueRenderer.durationMs),
 				offset: parseInt(cue.transcriptCueGroupRenderer.cues[0].transcriptCueRenderer.startOffsetMs)
 			}));
+		} else {
+			throw new Error('Error fetching transcripts');
 		}
 	}
 };
