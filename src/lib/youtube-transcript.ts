@@ -16,39 +16,6 @@ export const retrieveVideoId = (videoId: string) => {
 	throw new Error("Error: couldn't retrieve Youtube video ID");
 };
 
-export const fetchMeta = async (id: string) => {
-	const { body: videoPageBody } = await p(`https://www.youtube.com/watch?v=${id}`);
-	const innerTubeApiKey = videoPageBody.toString().split('"INNERTUBE_API_KEY":"')[1].split('"')[0];
-
-	const response = await fetch(
-		'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w',
-		{
-			method: 'POST',
-			body: JSON.stringify({
-				videoId: 'kt_ELiL-GIQ',
-				context: {
-					client: {
-						clientName: 'ANDROID',
-						clientVersion: '17.10.35',
-						androidSdkVersion: 30
-					}
-				}
-			})
-		}
-	);
-	const data = await response.json();
-	console.log(data);
-	if (innerTubeApiKey && innerTubeApiKey.length > 0) {
-		const { body }: { body: Record<string, any> } = await p({
-			url: `https://www.youtube.com/youtubei/v1/player?key=${innerTubeApiKey}`,
-			method: 'POST',
-			data: generateRequest(videoPageBody.toString()),
-			parse: 'json'
-		});
-		console.log(body);
-	}
-};
-
 export const fetchTranscript = async (id: string) => {
 	const { body: videoPageBody } = await p(`https://www.youtube.com/watch?v=${id}`);
 	const innerTubeApiKey = videoPageBody.toString().split('"INNERTUBE_API_KEY":"')[1].split('"')[0];
